@@ -302,6 +302,15 @@ class Configuration implements ConfigurationInterface
             $pluginsNode->children()->append($pluginNode);
         }
 
+        $nodeChildren
+            ->arrayNode('plugin_tags')
+                ->normalizeKeys(false)
+                ->useAttributeAsKey('name')
+                ->arrayPrototype()
+                    ->scalarPrototype()->end()
+                ->end()
+            ->end();
+
         return $node;
     }
 }

@@ -288,6 +288,56 @@ class EightPointsGuzzleExtensionTest extends TestCase
         $extension->load($config, $container);
     }
 
+    public function testLoadWithPluginTag()
+    {
+        $config = [
+            [
+                'clients' => [
+                    'test_api_with_plugin_tags' => [
+                        'base_url' => '//api.domain.tld/path',
+                        'plugin_tags' => [
+                            'wsse' => [
+                                'username' => 'mylogin',
+                                'password' => 'mypwd',
+                                'created_at' => '2018-10-16 08:00:00',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer();
+        $extension = new EightPointsGuzzleExtension();
+        $extension->load($config, $container);
+
+        $this->assertTrue($container->hasDefinition('eight_points_guzzle.client.test_api_with_plugin_tags'));
+        
+        $testClientDefinition = $container->getDefinition('eight_points_guzzle.client.test_api_with_plugin_tags');
+        
+        $this->assertTrue($testClientDefinition->hasTag('eight_points_guzzle.guzzle_client'));
+
+        $tag = $testClientDefinition->getTag('eight_points_guzzle.guzzle_client');
+
+        $this->assertEquals(
+            [
+                [
+                    'name' => 'test_api_with_plugin_tags',
+                    'plugins' => json_encode(
+                        [
+                            'wsse' => [
+                                'username' => 'mylogin',
+                                'password' => 'mypwd',
+                                'created_at' => '2018-10-16 08:00:00',
+                            ]
+                        ]
+                    ),
+                ],
+            ],
+            $tag
+        );
+    }
+    
     public function testLoadWithOptions()
     {
         $config = [

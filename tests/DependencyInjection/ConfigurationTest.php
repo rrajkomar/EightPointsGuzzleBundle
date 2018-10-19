@@ -51,6 +51,7 @@ class ConfigurationTest extends TestCase
                             'version' => '1.1',
                         ],
                         'plugin' => [],
+                        'plugin_tags' => [],
 						'class' => '%eight_points_guzzle_bundle.http_client.class%',
                     ]
                 ]
@@ -103,6 +104,7 @@ class ConfigurationTest extends TestCase
                             'version' => '1.1',
                         ],
                         'plugin' => [],
+                        'plugin_tags' => [],
 						'class' => '%eight_points_guzzle_bundle.http_client.class%',
                     ]
                 ]
@@ -168,6 +170,7 @@ class ConfigurationTest extends TestCase
                             'multipart' => [],
                         ],
                         'plugin' => [],
+                        'plugin_tags' => [],
 						'class' => '%eight_points_guzzle_bundle.http_client.class%',
                     ]
                 ]

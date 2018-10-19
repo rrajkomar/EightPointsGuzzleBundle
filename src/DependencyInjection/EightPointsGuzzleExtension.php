@@ -95,6 +95,16 @@ class EightPointsGuzzleExtension extends Extension
             $client->setPublic(true);
             $client->setLazy($options['lazy']);
 
+            $guzzleClientTagAttributes = ['name' => $name];
+            $guzzleClientPluginsConfig = [];
+
+            foreach ($options['plugin_tags'] as $pluginTag => $pluginOptions) {
+
+                $guzzleClientPluginsConfig[$pluginTag] = $pluginOptions;
+            }
+            $guzzleClientTagAttributes['plugins'] = json_encode($guzzleClientPluginsConfig);
+            $client->addTag('eight_points_guzzle.guzzle_client', $guzzleClientTagAttributes);
+
             // set service name based on client name
             $serviceName = sprintf('%s.client.%s', $this->getAlias(), $name);
             $container->setDefinition($serviceName, $client);
@@ -155,6 +165,9 @@ class EightPointsGuzzleExtension extends Extension
 
         // goes on the end of the stack.
         $handler->addMethodCall('unshift', [$eventExpression, 'events']);
+
+        $handlerStackServiceName = sprintf('eight_points_guzzle.handler_stack.%s', $clientName);
+        $container->setDefinition($handlerStackServiceName, $handler);
 
         return $handler;
     }
